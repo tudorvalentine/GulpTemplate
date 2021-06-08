@@ -1,1 +1,0 @@
-{"version":3,"sources":["main.scss"],"names":[],"mappings":"AAAA,KACC,iBAAA,KAED,KACC,MAAA,MACA,OAAA,MACA,iBAAA","file":"../sass/style.min.css","sourcesContent":["body{\n\tbackground-color: white;\n}\nmain{\n\twidth: 100px;\n\theight: 100px;\n\tbackground-color: black;\n}"]}
