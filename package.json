@@ -1,0 +1,34 @@
+{
+  "name": "ananas",
+  "version": "1.0.0",
+  "description": "First project for freelance",
+  "main": "index.js",
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "browser-sync": "^2.26.14",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-file-include": "^2.3.0",
+    "gulp-sass": "^4.1.0",
+    "gulp-sass-bulk-importer": "^3.0.1",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-uglify-es": "^2.0.0",
+    "gulp-watch": "^5.0.1",
+    "node-sass": "^6.0.0",
+    "require-dir": "^1.2.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "html": "gulp",
+    "build": "gulp libs_style && gulp libs_js && gulp style && gulp libs_js && gulp build_js && gulp html "
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^2.4.2"
+  }
+}
