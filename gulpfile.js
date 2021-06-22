@@ -126,6 +126,37 @@ function style() {
     .pipe(bs.stream())
 }
 
+const ttf2woff = require('gulp-ttf2woff');
+const ttf2woff2 = require('gulp-ttf2woff2');
+const imagemin = require('gulp-imagemin');
+function image() {
+	return src('src/img/*.{jpeg,jpg,png,gif}')
+	.pipe(imagemin([
+    imagemin.gifsicle({interlaced: true}),
+    imagemin.mozjpeg({quality: 75, progressive: true}),
+    imagemin.optipng({optimizationLevel: 5}),
+    imagemin.svgo({
+        plugins: [
+            {removeViewBox: true},
+            {cleanupIDs: false}
+        ]
+    })
+]))
+	.pipe(dest('build/img/'))
+	.pipe(bs.stream)
+}
+function fontWoff(){
+	return src('build/fonts/*.ttf')
+	.pipe(ttf2woff())
+	.pipe(dest('build/fonts/'))
+	.pipe(bs.stream())
+}
+function fontWoff2(){
+	return src('build/fonts/*.ttf')
+	.pipe(ttf2woff2())
+	.pipe(dest('build/fonts/'))
+	.pipe(bs.stream())
+}
 exports.default = parallel(
 	style,
 	watching,
@@ -133,5 +164,8 @@ exports.default = parallel(
 	bs_html,
 	dev_js,
 	html,
-	libs_js
+	libs_js,
+	fontWoff2,
+	fontWoff,
+	image
 )
