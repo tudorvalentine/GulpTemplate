@@ -89,7 +89,7 @@ function watching() {
 	watch('src/**/*.html', parallel(html));
 	watch('src/**/*.scss', parallel(style));
 	watch('src/**/*.js', parallel(dev_js));
-	watch('build/fonts/*.ttf' , series(fontWoff,fontWoff2))
+	watch('src/fonts/*.ttf' , series(fontWoff,fontWoff2))
 	watch('src/img/*.{jpeg,jpg,png,gif}' , parallel(image))
 }
 
@@ -149,13 +149,13 @@ function image() {
 	.pipe(bs.stream())
 }
 function fontWoff(){
-	return src('build/fonts/*.ttf')
+	return src('src/fonts/*.ttf')
 	.pipe(ttf2woff())
 	.pipe(dest('build/fonts/'))
 	.pipe(bs.stream())
 }
 function fontWoff2(){
-	return src('build/fonts/*.ttf')
+	return src('src/fonts/*.ttf')
 	.pipe(ttf2woff2())
 	.pipe(dest('build/fonts/'))
 	.pipe(bs.stream())
