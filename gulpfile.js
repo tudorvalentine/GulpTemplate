@@ -89,6 +89,8 @@ function watching() {
 	watch('src/**/*.html', parallel(html));
 	watch('src/**/*.scss', parallel(style));
 	watch('src/**/*.js', parallel(dev_js));
+	watch('build/fonts/*.ttf' , series(fontWoff,fontWoff2))
+	watch('src/img/*.{jpeg,jpg,png,gif}' , parallel(image))
 }
 
 function html() {
@@ -129,6 +131,7 @@ function style() {
 const ttf2woff = require('gulp-ttf2woff');
 const ttf2woff2 = require('gulp-ttf2woff2');
 const imagemin = require('gulp-imagemin');
+
 function image() {
 	return src('src/img/*.{jpeg,jpg,png,gif}')
 	.pipe(imagemin([
@@ -143,7 +146,7 @@ function image() {
     })
 ]))
 	.pipe(dest('build/img/'))
-	.pipe(bs.stream)
+	.pipe(bs.stream())
 }
 function fontWoff(){
 	return src('build/fonts/*.ttf')
