@@ -154,6 +154,11 @@ function fontWoff(){
 	.pipe(dest('build/fonts/'))
 	.pipe(bs.stream())
 }
+function moveTtf(){
+	return src('src/fonts/*.ttf')
+	.pipe(dest('build/fonts/'))
+	.pipe(bs.stream())
+}
 function fontWoff2(){
 	return src('src/fonts/*.ttf')
 	.pipe(ttf2woff2())
@@ -170,5 +175,6 @@ exports.default = parallel(
 	libs_js,
 	fontWoff2,
 	fontWoff,
-	image
+	image,
+	moveTtf
 )
