@@ -89,7 +89,7 @@ function watching() {
 	watch('src/**/*.html', parallel(html));
 	watch('src/**/*.scss', parallel(style));
 	watch('src/**/*.js', parallel(dev_js));
-	watch('src/fonts/*.ttf' , series(fontWoff,fontWoff2))
+	watch('src/fonts/*.ttf' , series(fontWoff,fontWoff2,moveTtf))
 	watch('src/img/*.{jpeg,jpg,png,gif}' , parallel(image))
 }
 
