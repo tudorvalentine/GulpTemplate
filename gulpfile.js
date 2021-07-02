@@ -56,17 +56,6 @@ function bs_html() {
 			host: '192.168.0.104',
 			tunnel:true,
 		},
-		callbacks: {
-			ready: function (err, bs) {
-				bs.addMiddleware("*", function (req, res) {
-					res.writeHead(302, {
-						location: "404.html"
-					});
-					res.end("Redirecting!");
-				});
-			}
-		},
-		browser: 'chrome',
 		logPrefix: 'BS-HTML:',
 		logLevel: 'info',
 		logConnections: true,
@@ -87,14 +76,14 @@ function build_js() {
 
 function watching() {
 	watch('src/**/*.html', parallel(html));
-	watch('src/**/*.scss', parallel(style));
+	watch('src/**/*.scss', parallel(style,html));
 	watch('src/**/*.js', parallel(dev_js));
-	watch('src/fonts/*.ttf' , series(fontWoff,fontWoff2,moveTtf))
+	watch('src/fonts/*.ttf' , series(fontWoff,fontWoff2,move))
 	watch('src/img/*.{jpeg,jpg,png,gif}' , parallel(image))
 }
 
 function html() {
-	 return src(['src/*.html' ])
+	 return src(['src/*.html'])
 		.pipe(include())
 		.pipe(dest('build'))
     .pipe(bs.stream())
@@ -154,10 +143,14 @@ function fontWoff(){
 	.pipe(dest('build/fonts/'))
 	.pipe(bs.stream())
 }
-function moveTtf(){
+function move(){
 	return src('src/fonts/*.ttf')
 	.pipe(dest('build/fonts/'))
 	.pipe(bs.stream())
+}
+function moveframe () {
+	return src('src/bootstrap/*.*')
+	.pipe(dest('build/bootstrap/'))
 }
 function fontWoff2(){
 	return src('src/fonts/*.ttf')
@@ -176,5 +169,6 @@ exports.default = parallel(
 	fontWoff2,
 	fontWoff,
 	image,
-	moveTtf
+	move,
+	moveframe
 )
