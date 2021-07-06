@@ -24,27 +24,11 @@ const {
 } = require('gulp');
 const include = require('gulp-file-include');
 
-const plugins = [];
-
-const chalk = require('chalk');
-
-function libs_js(done) {
-	if (plugins.length > 0)
-		return src(plugins)
-			.pipe(map.init())
-			.pipe(uglify())
-			.pipe(concat('libs.min.js'))
-			.pipe(map.write('../sourcemaps'))
-			.pipe(dest('build/js/'))
-	else {
-		return done(console.log(chalk.redBright('No added JS plugins')));
-	}
-}
 function dev_js() {
 	return src(['src/components/**/*.js', 'src/js/01_main.js'])
 		.pipe(map.init())
-		.pipe(uglify())
-		.pipe(concat('main.min.js'))
+		//.pipe(uglify())
+		.pipe(concat('main.js'))
 		.pipe(map.write('../sourcemaps'))
 		.pipe(dest('build/js/'))
     .pipe(bs.stream())
@@ -65,11 +49,11 @@ function bs_html() {
 
 function build_js() {
 	return src(['src/components/**/*.js', 'src/js/01_main.js'])
-		.pipe(uglify())
+		//.pipe(uglify())
 		.pipe(babel({
 			presets: ['@babel/env']
 		}))
-		.pipe(concat('main.min.js'))
+		.pipe(concat('main.js'))
 		.pipe(dest('build/js/'))
 }
 
@@ -79,7 +63,7 @@ function watching() {
 	watch('src/**/*.scss', parallel(style,html));
 	watch('src/**/*.js', parallel(dev_js));
 	watch('src/fonts/*.ttf' , series(fontWoff,fontWoff2,move))
-	watch('src/img/*.{jpeg,jpg,png,gif}' , parallel(image))
+	watch('src/img/*.{jpeg,jpg,png,gif,svg}' , parallel(image))
 }
 
 function html() {
@@ -92,10 +76,10 @@ function html() {
 function style() {
 	return src('src/sass/**/*.scss')
 		.pipe(map.init())
-		.pipe(bulk())
+		//.pipe(bulk())
 		.pipe(sass({
-			outputStyle: 'expanded'
-		}).on('error', sass.logError))
+            outputStyle: 'nested',     // вложенный (по умолчанию) 
+        }).on('error', sass.logError))
 		.pipe(prefixer({
 			overrideBrowserslist: ['last 8 versions'],
 			browsers: [
@@ -108,10 +92,10 @@ function style() {
 				'Safari >= 6',
 			],
 		}))
-		.pipe(clean({
+		/*.pipe(clean({
 			level: 2
-		}))
-		.pipe(concat('style.min.css'))
+		}))*/
+		.pipe(concat('style.css'))
 		.pipe(map.write('../sourcemaps/'))
 		.pipe(dest('build/css/'))
     .pipe(bs.stream())
@@ -122,7 +106,7 @@ const ttf2woff2 = require('gulp-ttf2woff2');
 const imagemin = require('gulp-imagemin');
 
 function image() {
-	return src('src/img/*.{jpeg,jpg,png,gif}')
+	return src('src/img/*.{jpeg,jpg,png,gif,svg}')
 	.pipe(imagemin([
     imagemin.gifsicle({interlaced: true}),
     imagemin.mozjpeg({quality: 75, progressive: true}),
@@ -165,7 +149,6 @@ exports.default = parallel(
 	bs_html,
 	dev_js,
 	html,
-	libs_js,
 	fontWoff2,
 	fontWoff,
 	image,
